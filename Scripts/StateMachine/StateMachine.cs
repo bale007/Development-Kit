@@ -1,27 +1,26 @@
 ﻿using System;
-using UnityEngine;
 using Bale007.Enumerable;
+using UnityEngine;
 
 namespace Bale007.StateMachine
 {
     public class StateMachine<T>
     {
-        public event Action<T> OnStateChangeEvent;
-
-        private  CustomStack<T> statePool;
+        private CustomStack<T> statePool;
         private string targetName;
-
-        public T CurrentState { get; protected set; }
 
         public StateMachine(string targetName)
         {
-            this.statePool = new CustomStack<T>();
+            statePool = new CustomStack<T>();
             this.targetName = targetName;
         }
 
+        public T CurrentState { get; protected set; }
+        public event Action<T> OnStateChangeEvent;
+
         public virtual void PushState(T newState)
         {
-            if(newState.Equals(CurrentState))
+            if (newState.Equals(CurrentState))
             {
                 // Debug.Log("Your are tring to push the same state:" + newState + " to the "+ typeof(T).ToString());
             }
@@ -31,7 +30,6 @@ namespace Bale007.StateMachine
             CurrentState = statePool.Peek();
 
             //Debug.LogFormat("Object [{0}] State Changed to {1}", targetName, newState.ToString());
-
         }
 
         public virtual void PopState(T newState)
@@ -44,20 +42,15 @@ namespace Bale007.StateMachine
             {
                 statePool.Remove(newState);
 
-                if(statePool.items.Count > 0)
-                {
-                    CurrentState = statePool.Peek();
-                }          
-            }      
+                if (statePool.items.Count > 0) CurrentState = statePool.Peek();
+            }
         }
 
         public virtual void Reset(T beginState)
         {
-            this.statePool = new CustomStack<T>();
+            statePool = new CustomStack<T>();
 
             PushState(beginState);
         }
-    } 
+    }
 }
-
-

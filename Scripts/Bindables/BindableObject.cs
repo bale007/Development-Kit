@@ -4,8 +4,6 @@ namespace Bale007.Bindables
 {
     public class BindableObject
     {
-        public event Action<object> changed;
-        
         private object value;
 
         public BindableObject(object value = null)
@@ -25,5 +23,7 @@ namespace Bale007.Bindables
                 }
             }
         }
+
+        public event Action<object> changed;
     }
 }

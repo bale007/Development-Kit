@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 namespace Bale007.Enumerable
 {
@@ -12,29 +10,34 @@ namespace Bale007.Enumerable
         {
             items.Add(item);
         }
+
         public T Peek()
         {
             return items[items.Count - 1];
         }
+
         public T Pop()
         {
             if (items.Count > 0)
             {
-                T temp = items[items.Count - 1];
+                var temp = items[items.Count - 1];
                 items.RemoveAt(items.Count - 1);
                 return temp;
             }
-            else
-                return default(T);
+
+            return default;
         }
+
         public void RemoveAt(int itemAtPosition)
         {
             items.RemoveAt(itemAtPosition);
         }
+
         public void Remove(T state)
         {
             items.Remove(state);
         }
+
         public bool Contains(T state)
         {
             return items.Contains(state);

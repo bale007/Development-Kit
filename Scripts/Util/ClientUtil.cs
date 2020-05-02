@@ -1,84 +1,78 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using Bale007.Crypto;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Bale007.Util
 {
     public static class ClientUtil
-    {              
+    {
         #region Debug
 
         public static void ShowSystemInfo()
         {
-            Debug.Log("## System memory: " + SystemInfo.systemMemorySize.ToString() + " MB");
+            Debug.Log("## System memory: " + SystemInfo.systemMemorySize + " MB");
             Debug.Log("## Graphics API: " + SystemInfo.graphicsDeviceVersion);
         }
-    
+
         public static void Log(string aLog)
         {
-            if (Setting.SHOW_DEBUG_MSG)
-            {
-                Debug.Log(aLog);
-            }
+            if (Setting.SHOW_DEBUG_MSG) Debug.Log(aLog);
         }
 
         public static void LogError(string aLog)
         {
-            if (Setting.SHOW_DEBUG_MSG)
-            {
-                Debug.LogError(aLog);
-            }
+            if (Setting.SHOW_DEBUG_MSG) Debug.LogError(aLog);
         }
 
         public static void Log(string aLog, string color)
         {
-            if (Setting.SHOW_DEBUG_MSG)
-            {
-                Debug.Log("<color=" + color + ">" + aLog + "</color>");
-            }
+            if (Setting.SHOW_DEBUG_MSG) Debug.Log("<color=" + color + ">" + aLog + "</color>");
         }
 
         #endregion debug
 
         #region Parsing
 
-        public static T ParseEnum<T>(string value) where T : System.Enum
+        public static T ParseEnum<T>(string value) where T : Enum
         {
             try
             {
-                return (T)System.Enum.Parse(typeof(T), value);
+                return (T) Enum.Parse(typeof(T), value);
             }
             catch
             {
-                throw new System.Exception("Error Happended When Parsing:" + value);
+                throw new Exception("Error Happended When Parsing:" + value);
             }
         }
 
         public static int ParseInt(string aText)
         {
-            return int.Parse(aText, System.Globalization.NumberFormatInfo.InvariantInfo);
+            return int.Parse(aText, NumberFormatInfo.InvariantInfo);
         }
 
         public static float ParseFloat(string aText)
         {
-            return float.Parse(aText, System.Globalization.NumberFormatInfo.InvariantInfo);
+            return float.Parse(aText, NumberFormatInfo.InvariantInfo);
         }
 
         public static Vector2 ParseVector2(string aText)
         {
-            string[] textSplit = aText.Split(',');
+            var textSplit = aText.Split(',');
             return new Vector2(ParseFloat(textSplit[0]), ParseFloat(textSplit[1]));
         }
 
         public static string ToUpper(string aText)
         {
-            return aText.ToUpper(System.Globalization.CultureInfo.InvariantCulture);
+            return aText.ToUpper(CultureInfo.InvariantCulture);
         }
 
         public static string ToLower(string aText)
         {
-            return aText.ToLower(System.Globalization.CultureInfo.InvariantCulture);
+            return aText.ToLower(CultureInfo.InvariantCulture);
         }
 
         public static int CompareTo(string a, string b)
@@ -92,187 +86,139 @@ namespace Bale007.Util
 
         public static double ConvertBytesToMegabytes(long bytes)
         {
-            return (bytes / 1024f) / 1024f;
+            return bytes / 1024f / 1024f;
         }
 
         public static long ConvertMegabytesToBytes(long megabytes)
         {
-            return (megabytes * 1024) * 1024;
+            return megabytes * 1024 * 1024;
         }
 
         public static string ListToString(List<string> content, char separator = ',')
         {
-            string result = "";
-            
-            if (content == null)
-            {
-                return null;
-            }
+            var result = "";
 
-            for (int i = 0; i < content.Count; i++)
+            if (content == null) return null;
+
+            for (var i = 0; i < content.Count; i++)
             {
-                if (i != 0)
-                {
-                    result += ",";
-                }
-                
+                if (i != 0) result += ",";
+
                 result += content[i];
             }
 
             return result;
         }
-        
+
         public static string ListToString(List<int> content, char separator = ',')
         {
-            string result = "";
-            
-            if (content == null)
-            {
-                return null;
-            }
+            var result = "";
 
-            for (int i = 0; i < content.Count; i++)
+            if (content == null) return null;
+
+            for (var i = 0; i < content.Count; i++)
             {
-                if (i != 0)
-                {
-                    result += ",";
-                }
-                
+                if (i != 0) result += ",";
+
                 result += content[i];
             }
 
             return result;
         }
-        
+
         public static List<string> StringToList(string content, char separator = ',')
         {
-            if (string.IsNullOrEmpty(content))
-            {
-                return null;
-            }
+            if (string.IsNullOrEmpty(content)) return null;
 
-            if (!content.Contains(separator))
-            {
-                return new List<string>{content};
-            }
+            if (!content.Contains(separator)) return new List<string> {content};
 
             return new List<string>(content.Split(separator));
         }
-        
+
         public static List<int> StringToIntegerList(string content, char separator = ',')
         {
-            if (string.IsNullOrEmpty(content))
-            {
-                return null;
-            }
+            if (string.IsNullOrEmpty(content)) return null;
 
-            if (!content.Contains(separator))
-            {
-                return new List<int>{int.Parse(content)};
-            }
-            
+            if (!content.Contains(separator)) return new List<int> {int.Parse(content)};
+
             var list = new List<int>();
 
-            foreach (var value in content.Split(separator))
-            {
-                list.Add(int.Parse(value));
-            }
+            foreach (var value in content.Split(separator)) list.Add(int.Parse(value));
 
             return list;
         }
-        
-        public static List<T> StringToList<T>(string content, char separator = ',') where T: Enum
+
+        public static List<T> StringToList<T>(string content, char separator = ',') where T : Enum
         {
-            if (string.IsNullOrEmpty(content))
-            {
-                return null;
-            }
-            
-            if (!content.Contains(separator))
-            {
-                return new List<T>{ParseEnum<T>(content)};
-            }
+            if (string.IsNullOrEmpty(content)) return null;
+
+            if (!content.Contains(separator)) return new List<T> {ParseEnum<T>(content)};
 
             var list = new List<T>();
-            
-            foreach (var str in StringToList(content))
-            {
-                list.Add(ParseEnum<T>(str));
-            }
+
+            foreach (var str in StringToList(content)) list.Add(ParseEnum<T>(str));
 
             return list;
         }
 
         public static string ColorToHex(Color32 color)
         {
-            string hex = color.r.ToString("X2") + color.g.ToString("X2") + color.b.ToString("X2");
+            var hex = color.r.ToString("X2") + color.g.ToString("X2") + color.b.ToString("X2");
             return hex;
         }
 
         public static Color HexToColor(string hex)
         {
-            hex = hex.Replace("0x", "");//in case the string is formatted 0xFFFFFF
-            hex = hex.Replace("#", "");//in case the string is formatted #FFFFFF
-            byte a = 255;//assume fully visible unless specified in hex
-            byte r = byte.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
-            byte g = byte.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
-            byte b = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+            hex = hex.Replace("0x", ""); //in case the string is formatted 0xFFFFFF
+            hex = hex.Replace("#", ""); //in case the string is formatted #FFFFFF
+            byte a = 255; //assume fully visible unless specified in hex
+            var r = byte.Parse(hex.Substring(0, 2), NumberStyles.HexNumber);
+            var g = byte.Parse(hex.Substring(2, 2), NumberStyles.HexNumber);
+            var b = byte.Parse(hex.Substring(4, 2), NumberStyles.HexNumber);
             //Only use alpha if the string has enough characters
-            if (hex.Length == 8)
-            {
-                a = byte.Parse(hex.Substring(6, 2), System.Globalization.NumberStyles.HexNumber);
-            }
+            if (hex.Length == 8) a = byte.Parse(hex.Substring(6, 2), NumberStyles.HexNumber);
+
             return new Color32(r, g, b, a);
         }
 
         public static List<string> DictionaryToList(Dictionary<string, int> dictionary, char separator = ':')
         {
-            List<string> result = new List<string>();
+            var result = new List<string>();
 
-            foreach (var pair in dictionary)
-            {
-                result.Add(pair.Key.ToString() + separator + pair.Value.ToString());
-            }
+            foreach (var pair in dictionary) result.Add(pair.Key + separator + pair.Value);
 
             return result;
         }
-        
+
         public static List<string> DictionaryToList(Dictionary<int, int> dictionary, char separator = ':')
         {
-            List<string> result = new List<string>();
+            var result = new List<string>();
 
-            foreach (var pair in dictionary)
-            {
-                result.Add(pair.Key.ToString() + separator + pair.Value.ToString());
-            }
+            foreach (var pair in dictionary) result.Add(pair.Key.ToString() + separator + pair.Value);
 
             return result;
         }
 
-        public static List<string> DictionaryToList<T>(Dictionary<T, int> dictionary, char separator = ':') where T : Enum
+        public static List<string> DictionaryToList<T>(Dictionary<T, int> dictionary, char separator = ':')
+            where T : Enum
         {
-            List<string> result = new List<string>();
+            var result = new List<string>();
 
-            foreach (var pair in dictionary)
-            {
-                result.Add(pair.Key.ToString() + separator + pair.Value.ToString());
-            }
+            foreach (var pair in dictionary) result.Add(pair.Key.ToString() + separator + pair.Value);
 
             return result;
         }
 
-        public static Dictionary<string, int> StringToIntDictionary(string content, char rowChar = '&', char pairChar = '=')
+        public static Dictionary<string, int> StringToIntDictionary(string content, char rowChar = '&',
+            char pairChar = '=')
         {
-            if (string.IsNullOrEmpty(content))
-            {
-                return null;
-            }
-        
-            Dictionary<string, int> returnDic = new Dictionary<string, int>();
+            if (string.IsNullOrEmpty(content)) return null;
 
-            List<string> rowString = StringToList(content, rowChar);
+            var returnDic = new Dictionary<string, int>();
 
-            foreach (string rowData in rowString)
+            var rowString = StringToList(content, rowChar);
+
+            foreach (var rowData in rowString)
             {
                 var arr = rowData.Split(pairChar);
 
@@ -281,19 +227,17 @@ namespace Bale007.Util
 
             return returnDic;
         }
-    
-        public static Dictionary<T, int> StringToIntDictionary<T>(string content, char rowChar = '&', char pairChar = '=') where T : Enum
+
+        public static Dictionary<T, int> StringToIntDictionary<T>(string content, char rowChar = '&',
+            char pairChar = '=') where T : Enum
         {
-            if (string.IsNullOrEmpty(content))
-            {
-                return null;
-            }
-        
-            Dictionary<T, int> returnDic = new Dictionary<T, int>();
+            if (string.IsNullOrEmpty(content)) return null;
 
-            List<string> rowString = StringToList(content, rowChar);
+            var returnDic = new Dictionary<T, int>();
 
-            foreach (string rowData in rowString)
+            var rowString = StringToList(content, rowChar);
+
+            foreach (var rowData in rowString)
             {
                 var arr = rowData.Split(pairChar);
 
@@ -303,18 +247,16 @@ namespace Bale007.Util
             return returnDic;
         }
 
-        public static Dictionary<string, string> StringToStringDictionary(string content, char rowChar = '&', char pairChar = '=')
+        public static Dictionary<string, string> StringToStringDictionary(string content, char rowChar = '&',
+            char pairChar = '=')
         {
-            if (string.IsNullOrEmpty(content))
-            {
-                return null;
-            }
-        
+            if (string.IsNullOrEmpty(content)) return null;
+
             var returnDic = new Dictionary<string, string>();
 
-            List<string> rowString = StringToList(content, rowChar);
+            var rowString = StringToList(content, rowChar);
 
-            foreach (string rowData in rowString)
+            foreach (var rowData in rowString)
             {
                 var arr = rowData.Split(pairChar);
 
@@ -323,19 +265,17 @@ namespace Bale007.Util
 
             return returnDic;
         }
-        
-        public static Dictionary<int, string> StringToIntStringDictionary(string content, char rowChar = '&', char pairChar = '=')
+
+        public static Dictionary<int, string> StringToIntStringDictionary(string content, char rowChar = '&',
+            char pairChar = '=')
         {
-            if (string.IsNullOrEmpty(content))
-            {
-                return null;
-            }
-        
+            if (string.IsNullOrEmpty(content)) return null;
+
             var returnDic = new Dictionary<int, string>();
 
-            List<string> rowString = StringToList(content, rowChar);
+            var rowString = StringToList(content, rowChar);
 
-            foreach (string rowData in rowString)
+            foreach (var rowData in rowString)
             {
                 var arr = rowData.Split(pairChar);
 
@@ -344,19 +284,17 @@ namespace Bale007.Util
 
             return returnDic;
         }
-    
-        public static Dictionary<T, string> StringToStringDictionary<T>(string content, char rowChar = '&', char pairChar = '=') where T : Enum
+
+        public static Dictionary<T, string> StringToStringDictionary<T>(string content, char rowChar = '&',
+            char pairChar = '=') where T : Enum
         {
-            if (string.IsNullOrEmpty(content))
-            {
-                return null;
-            }
-        
-            Dictionary<T, string> returnDic = new Dictionary<T, string>();
+            if (string.IsNullOrEmpty(content)) return null;
 
-            List<string> rowString = StringToList(content, rowChar);
+            var returnDic = new Dictionary<T, string>();
 
-            foreach (string rowData in rowString)
+            var rowString = StringToList(content, rowChar);
+
+            foreach (var rowData in rowString)
             {
                 var arr = rowData.Split(pairChar);
 
@@ -365,19 +303,17 @@ namespace Bale007.Util
 
             return returnDic;
         }
-        
-        public static Dictionary<string, T> StringToEnumDictionary<T>(string content, char rowChar = '&', char pairChar = '=') where T : Enum
+
+        public static Dictionary<string, T> StringToEnumDictionary<T>(string content, char rowChar = '&',
+            char pairChar = '=') where T : Enum
         {
-            if (string.IsNullOrEmpty(content))
-            {
-                return null;
-            }
-        
+            if (string.IsNullOrEmpty(content)) return null;
+
             var returnDic = new Dictionary<string, T>();
 
-            List<string> rowString = StringToList(content, rowChar);
+            var rowString = StringToList(content, rowChar);
 
-            foreach (string rowData in rowString)
+            foreach (var rowData in rowString)
             {
                 var arr = rowData.Split(pairChar);
 
@@ -389,53 +325,54 @@ namespace Bale007.Util
 
         public static Dictionary<string, string> ListToStringDictionary(List<string> list, char separator = ':')
         {
-            Dictionary<string, string> aDict = new Dictionary<string, string>();
+            var aDict = new Dictionary<string, string>();
 
-            foreach (string content in list)
+            foreach (var content in list)
             {
-                string[] values = content.Split(separator);
+                var values = content.Split(separator);
 
                 aDict.Add(values[0], values[1]);
             }
 
             return aDict;
         }
-        
-        public static Dictionary<T, string> ListToStringDictionary<T>(List<string> list, char separator = ':') where T: Enum
-        {
-            Dictionary<T, string> aDict = new Dictionary<T, string>();
 
-            foreach (string content in list)
+        public static Dictionary<T, string> ListToStringDictionary<T>(List<string> list, char separator = ':')
+            where T : Enum
+        {
+            var aDict = new Dictionary<T, string>();
+
+            foreach (var content in list)
             {
-                string[] values = content.Split(separator);
+                var values = content.Split(separator);
 
                 aDict.Add(ParseEnum<T>(values[0]), values[1]);
             }
 
             return aDict;
         }
-        
+
         public static Dictionary<string, int> ListToStringIntDictionary(List<string> list, char separator = ':')
         {
-            Dictionary<string, int> aDict = new Dictionary<string, int>();
+            var aDict = new Dictionary<string, int>();
 
-            foreach (string content in list)
+            foreach (var content in list)
             {
-                string[] values = content.Split(separator);
+                var values = content.Split(separator);
 
                 aDict.Add(values[0], int.Parse(values[1]));
             }
 
             return aDict;
         }
-        
+
         public static Dictionary<int, int> ListToIntIntDictionary(List<string> list, char separator = ':')
         {
-            Dictionary<int, int> aDict = new Dictionary<int, int>();
+            var aDict = new Dictionary<int, int>();
 
-            foreach (string content in list)
+            foreach (var content in list)
             {
-                string[] values = content.Split(separator);
+                var values = content.Split(separator);
 
                 aDict.Add(int.Parse(values[0]), int.Parse(values[1]));
             }
@@ -450,24 +387,20 @@ namespace Bale007.Util
         public static bool LayerInLayerMask(int layer, LayerMask layerMask)
         {
             if (((1 << layer) & layerMask) != 0)
-            {
                 return true;
-            }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public static int LayerMaskToLayer(LayerMask layerMask)
         {
-            int layerNumber = 0;
-            int layer = layerMask.value;
+            var layerNumber = 0;
+            var layer = layerMask.value;
             while (layer > 0)
             {
                 layer = layer >> 1;
                 layerNumber++;
             }
+
             return layerNumber - 1;
         }
 
@@ -488,7 +421,7 @@ namespace Bale007.Util
 
         public static string FilterName(string aName)
         {
-            string outputString = aName.Replace("[", "");
+            var outputString = aName.Replace("[", "");
             outputString = outputString.Replace("]", "");
             outputString = outputString.Replace("<", "");
             outputString = outputString.Replace(">", "");
@@ -507,16 +440,14 @@ namespace Bale007.Util
 
         public static string FormatString(string str, Dictionary<string, string> parameters)
         {
-            foreach (KeyValuePair<string, string> entry in parameters)
-            {
-                str = str.Replace(string.Format("{{{0}}}", entry.Key), entry.Value);
-            }
+            foreach (var entry in parameters) str = str.Replace(string.Format("{{{0}}}", entry.Key), entry.Value);
+
             return str;
         }
 
         public static float Round(float value, int digits)
         {
-            float mult = Mathf.Pow(10.0f, (float)digits);
+            var mult = Mathf.Pow(10.0f, digits);
             return Mathf.Round(value * mult) / mult;
         }
 
@@ -534,11 +465,11 @@ namespace Bale007.Util
 
         public static List<int> GetDmgRangeFromVariance(int baseDmg, float variance)
         {
-            List<int> range = new List<int>();
+            var range = new List<int>();
             if (variance > 0)
             {
-                int min = Mathf.RoundToInt((float)baseDmg * (1f - variance));
-                int max = Mathf.RoundToInt((float)baseDmg * (1f + variance));
+                var min = Mathf.RoundToInt(baseDmg * (1f - variance));
+                var max = Mathf.RoundToInt(baseDmg * (1f + variance));
 
                 range.Add(Mathf.Max(1, min));
                 range.Add(Mathf.Max(1, max));
@@ -554,16 +485,17 @@ namespace Bale007.Util
 
         public static int GetLowestIndex(List<float> valueList)
         {
-            float lowest = float.MaxValue;
-            int lowestIndex = -1;
-            int checkIndex = 0;
-            foreach (float value in valueList)
+            var lowest = float.MaxValue;
+            var lowestIndex = -1;
+            var checkIndex = 0;
+            foreach (var value in valueList)
             {
                 if (value < lowest)
                 {
                     lowest = value;
                     lowestIndex = checkIndex;
                 }
+
                 checkIndex++;
             }
 
@@ -577,7 +509,7 @@ namespace Bale007.Util
 
         public static int CalculateDimensionByRatio(int origDim, int scaledRefDim, int origRefDim)
         {
-            int resultDim = Mathf.RoundToInt(scaledRefDim / (float)origRefDim * (float)origDim);
+            var resultDim = Mathf.RoundToInt(scaledRefDim / (float) origRefDim * origDim);
 
             return resultDim;
         }
@@ -601,29 +533,29 @@ namespace Bale007.Util
 
         public static Vector2 Rotate(this Vector2 v, float degrees)
         {
-            float sin = Mathf.Sin(degrees * Mathf.Deg2Rad);
-            float cos = Mathf.Cos(degrees * Mathf.Deg2Rad);
+            var sin = Mathf.Sin(degrees * Mathf.Deg2Rad);
+            var cos = Mathf.Cos(degrees * Mathf.Deg2Rad);
 
-            float tx = v.x;
-            float ty = v.y;
-            v.x = (cos * tx) - (sin * ty);
-            v.y = (sin * tx) + (cos * ty);
+            var tx = v.x;
+            var ty = v.y;
+            v.x = cos * tx - sin * ty;
+            v.y = sin * tx + cos * ty;
             return v;
         }
 
         public static Vector3 SnapVector(Vector3 v3, float snapAngle)
         {
-            float angle = Vector3.Angle(v3, Vector3.up);
+            var angle = Vector3.Angle(v3, Vector3.up);
             if (angle < snapAngle / 2.0f)
                 return Vector3.up * v3.magnitude;
             if (angle > 180.0f - snapAngle / 2.0f)
                 return Vector3.down * v3.magnitude;
 
-            float t = Mathf.Round(angle / snapAngle);
-            float deltaAngle = (t * snapAngle) - angle;
+            var t = Mathf.Round(angle / snapAngle);
+            var deltaAngle = t * snapAngle - angle;
 
-            Vector3 axis = Vector3.Cross(Vector3.up, v3);
-            Quaternion q = Quaternion.AngleAxis(deltaAngle, axis);
+            var axis = Vector3.Cross(Vector3.up, v3);
+            var q = Quaternion.AngleAxis(deltaAngle, axis);
             return q * v3;
         }
 
@@ -633,7 +565,7 @@ namespace Bale007.Util
 
         public static string GetSystemTime()
         {
-            DateTime dt = DateTime.Now;
+            var dt = DateTime.Now;
             return dt.ToString("yyyy-MM-dd HH:mm:ss");
         }
 
@@ -649,39 +581,39 @@ namespace Bale007.Util
 
         public static TimeSpan GetTimeSpanFromNow(string to)
         {
-            DateTime dt2 = DateTime.Parse(to);
+            var dt2 = DateTime.Parse(to);
 
             return GetTimeSpanFromNow(dt2);
         }
 
         public static TimeSpan GetTimeSpanFromNow(DateTime to)
         {
-            DateTime dt1 = DateTime.Now;
+            var dt1 = DateTime.Now;
 
-            DateTime dt2 = to;
+            var dt2 = to;
 
-            TimeSpan ts1 = new TimeSpan(dt1.Ticks);
+            var ts1 = new TimeSpan(dt1.Ticks);
 
-            TimeSpan ts2 = new TimeSpan(dt2.Ticks);
+            var ts2 = new TimeSpan(dt2.Ticks);
 
-            TimeSpan tsSub = ts1.Subtract(ts2).Negate();
+            var tsSub = ts1.Subtract(ts2).Negate();
 
             return tsSub;
         }
 
         public static string GetTimeFormat(int aTime)
         {
-            int hr = aTime / 3600;
+            var hr = aTime / 3600;
 
-            aTime -= (hr * 3600);
+            aTime -= hr * 3600;
 
-            int min = aTime / 60;
+            var min = aTime / 60;
 
-            aTime -= (min * 60);
+            aTime -= min * 60;
 
-            string hrString = (hr < 10) ? ("0" + hr) : hr.ToString();
-            string minString = (min < 10) ? ("0" + min) : min.ToString();
-            string secString = (aTime < 10) ? ("0" + aTime) : aTime.ToString();
+            var hrString = hr < 10 ? "0" + hr : hr.ToString();
+            var minString = min < 10 ? "0" + min : min.ToString();
+            var secString = aTime < 10 ? "0" + aTime : aTime.ToString();
 
             return hrString + ":" + minString + ":" + secString;
         }
@@ -689,36 +621,23 @@ namespace Bale007.Util
         public static string GetHrFormat(int aHr)
         {
             if (aHr < 10)
-            {
                 return "0" + aHr + ":00";
-            }
-            else
-            {
-                return aHr + ":00";
-            }
+            return aHr + ":00";
         }
 
         public static string GetMissionTimeFormat(float aMTime)
         {
-            string tString = "";
+            var tString = "";
             if (aMTime < 10f)
-            {
-                tString += "0" + Mathf.FloorToInt(aMTime).ToString();
-            }
+                tString += "0" + Mathf.FloorToInt(aMTime);
             else
-            {
                 tString += Mathf.FloorToInt(aMTime).ToString();
-            }
 
-            int minInt = Mathf.FloorToInt(aMTime % 1f * 60f);
+            var minInt = Mathf.FloorToInt(aMTime % 1f * 60f);
             if (minInt < 10f)
-            {
-                tString += "0" + minInt.ToString();
-            }
+                tString += "0" + minInt;
             else
-            {
                 tString += minInt.ToString();
-            }
 
             return tString;
         }
@@ -730,102 +649,81 @@ namespace Bale007.Util
         public static T RandomEnumValue<T>() where T : Enum
         {
             var values = Enum.GetValues(typeof(T));
-            int random = UnityEngine.Random.Range(0, values.Length);
-            return (T)values.GetValue(random);
+            var random = Random.Range(0, values.Length);
+            return (T) values.GetValue(random);
         }
 
         public static T RandomFromList<T>(List<T> aList)
         {
-            return aList[UnityEngine.Random.Range(0, aList.Count)];
+            return aList[Random.Range(0, aList.Count)];
         }
 
         public static int RandomNegativePositive()
         {
-            return UnityEngine.Random.Range(0, 2) * 2 - 1;
+            return Random.Range(0, 2) * 2 - 1;
         }
 
         public static Vector2 RandomNormalizedVector()
         {
-            Vector2 v = Vector2.one;
-            v.x = UnityEngine.Random.Range(-1f, 1f);
-            v.y = UnityEngine.Random.Range(-1f, 1f);
+            var v = Vector2.one;
+            v.x = Random.Range(-1f, 1f);
+            v.y = Random.Range(-1f, 1f);
             return v.normalized;
         }
 
         public static bool ChanceSuccess100(float chance)
         {
-            return chance > UnityEngine.Random.Range(0, 100);
+            return chance > Random.Range(0, 100);
         }
 
         public static bool RandomizeChance(float chance)
         {
-            if (chance <= 0)
-            {
+            if (chance <= 0) return false;
+
+            if (chance >= 1f) return true;
+
+            var randomFloat = Random.Range(0, 1f);
+            if (randomFloat > chance)
                 return false;
-            }
-            else if (chance >= 1f)
-            {
-                return true;
-            }
-            else
-            {
-                float randomFloat = UnityEngine.Random.Range(0, 1f);
-                if (randomFloat > chance)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
+            return true;
         }
 
         public static List<int> ShuffleIntList(List<int> toShuffle, int selectCount)
         {
-            List<int> shuffleIndexList = GetRandomIntList(toShuffle.Count, selectCount);
-            List<int> shuffledList = new List<int>();
-            foreach (int shuffleIndex in shuffleIndexList)
-            {
-                shuffledList.Add(toShuffle[shuffleIndex]);
-            }
+            var shuffleIndexList = GetRandomIntList(toShuffle.Count, selectCount);
+            var shuffledList = new List<int>();
+            foreach (var shuffleIndex in shuffleIndexList) shuffledList.Add(toShuffle[shuffleIndex]);
 
             return shuffledList;
         }
 
         public static List<int> SelectRandomIntList(List<int> intList, int selectCount)
         {
-            List<int> selectList = new List<int>();
-            List<int> indexList = GetRandomIntList(intList.Count, selectCount);
+            var selectList = new List<int>();
+            var indexList = GetRandomIntList(intList.Count, selectCount);
 
-            foreach (int randInd in indexList)
-            {
-                selectList.Add(intList[randInd]);
-            }
+            foreach (var randInd in indexList) selectList.Add(intList[randInd]);
 
             return selectList;
         }
 
         public static int ChooseRandomIndex(int listCount)
         {
-            return UnityEngine.Random.Range(0, listCount);
+            return Random.Range(0, listCount);
         }
 
         public static List<int> GetRandomIntList(int listCount, int selectCount)
         {
-            List<int> selectList = new List<int>();
-            List<int> randomList = new List<int>();
+            var selectList = new List<int>();
+            var randomList = new List<int>();
 
             selectCount = Math.Min(listCount, selectCount);
 
-            for (int i = 0; i < listCount; i++)
-            {
-                randomList.Add(i);
-            }
+            for (var i = 0; i < listCount; i++) randomList.Add(i);
 
             while (randomList.Count > 0 && selectCount > 0)
             {
-                int randomIndex = UnityEngine.Random.Range(0, randomList.Count);
+                var randomIndex = Random.Range(0, randomList.Count);
                 selectList.Add(randomList[randomIndex]);
                 //			debug (randomIndex + " selectList add "+randomList[randomIndex]);
 
@@ -834,7 +732,7 @@ namespace Bale007.Util
             }
 
             return selectList;
-        }      
+        }
 
         #endregion random
 
@@ -851,6 +749,5 @@ namespace Bale007.Util
         }
 
         #endregion
-        
     }
 }

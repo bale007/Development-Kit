@@ -4,8 +4,8 @@ namespace Bale007.Singleton
 {
     public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
-        private static bool m_ShuttingDown = false;
-        private static object m_Lock = new object();
+        private static bool m_ShuttingDown;
+        private static readonly object m_Lock = new object();
         private static T m_Instance;
 
         public static T Instance
@@ -23,13 +23,13 @@ namespace Bale007.Singleton
                 {
                     if (m_Instance == null)
                     {
-                        m_Instance = (T)FindObjectOfType(typeof(T));
+                        m_Instance = (T) FindObjectOfType(typeof(T));
 
                         if (m_Instance == null)
                         {
                             var singletonObject = new GameObject();
                             m_Instance = singletonObject.AddComponent<T>();
-                            singletonObject.name = typeof(T).ToString() + " (Singleton)";
+                            singletonObject.name = typeof(T) + " (Singleton)";
 
                             DontDestroyOnLoad(singletonObject);
                         }

@@ -5,14 +5,14 @@ namespace Bale007.Bindables
 {
     public class BindableFloat
     {
-        public event Action<float> changed;
-        
-        public float minValue;
         public float maxValue;
-              
+
+        public float minValue;
+
         private float value;
 
-        public BindableFloat(float value = 0f, float minValue = float.NegativeInfinity, float maxValue = float.PositiveInfinity)
+        public BindableFloat(float value = 0f, float minValue = float.NegativeInfinity,
+            float maxValue = float.PositiveInfinity)
         {
             this.value = value;
 
@@ -33,5 +33,7 @@ namespace Bale007.Bindables
                 }
             }
         }
+
+        public event Action<float> changed;
     }
 }

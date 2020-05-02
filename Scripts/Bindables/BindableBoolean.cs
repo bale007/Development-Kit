@@ -4,8 +4,6 @@ namespace Bale007.Bindables
 {
     public class BindableBoolean
     {
-        public event Action<bool> changed;
-        
         private bool value;
 
         public BindableBoolean(bool value)
@@ -25,5 +23,7 @@ namespace Bale007.Bindables
                 }
             }
         }
+
+        public event Action<bool> changed;
     }
 }

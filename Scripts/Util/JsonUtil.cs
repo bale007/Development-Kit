@@ -8,13 +8,13 @@ namespace Bale007.Util
     {
         public static void Save<T>(T content, string filename) where T : class
         {
-            string dataJson = JsonConvert.SerializeObject(content as T, Formatting.Indented);
+            var dataJson = JsonConvert.SerializeObject(content, Formatting.Indented);
 
             //TODO Encryption
-            string dataEncrypted = ClientUtil.EncryptString(dataJson);
+            var dataEncrypted = ClientUtil.EncryptString(dataJson);
 
             //string filePath = Path.Combine(Constant.SAVE_PATH, Constant.SAVE_FOLDER_NAME);
-            string filePath = Setting.SAVE_PATH;
+            var filePath = Setting.SAVE_PATH;
 
             Debug.Log("root path:" + filePath);
             //createIfNotExist(filePath);
@@ -28,7 +28,6 @@ namespace Bale007.Util
             Debug.Log("Path: " + filePath);
             Debug.Log("Size: " + SizeOfString(dataEncrypted) + " Kb");
             Debug.Log("------------------------");
-
         }
 
         public static T Load<T>(string filename) where T : class
@@ -45,9 +44,9 @@ namespace Bale007.Util
             {
                 var timeBeforeSerialization = Time.realtimeSinceStartup;
 
-                string dataEncrypted = File.ReadAllText(filePath);
+                var dataEncrypted = File.ReadAllText(filePath);
 
-                string dataDecrypted = ClientUtil.DecryptString(dataEncrypted);
+                var dataDecrypted = ClientUtil.DecryptString(dataEncrypted);
 
                 var content = JsonConvert.DeserializeObject<T>(dataDecrypted);
 
@@ -56,9 +55,10 @@ namespace Bale007.Util
                 Debug.Log("<color=green>Loaded Save File</color>");
                 Debug.Log("Path: " + filePath);
                 Debug.Log("Size: " + SizeOfString(dataEncrypted) + " Kb");
-                Debug.Log("Json Serialization Time: " + (timeAfterSerialization - timeBeforeSerialization) * 1000 + "ms");
+                Debug.Log(
+                    "Json Serialization Time: " + (timeAfterSerialization - timeBeforeSerialization) * 1000 + "ms");
 
-                return content as T;
+                return content;
             }
 
             Debug.Log("<color=red>Load Failed</color>");
@@ -87,7 +87,5 @@ namespace Bale007.Util
         {
             return content.Length * sizeof(char) / 1024f;
         }
-
-
     }
 }

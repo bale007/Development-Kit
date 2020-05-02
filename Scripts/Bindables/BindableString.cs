@@ -1,12 +1,9 @@
 using System;
-using UnityEngine;
 
 namespace Bale007.Bindables
 {
     public class BindableString
     {
-        public event Action<string> changed;
-        
         private string value;
 
         public BindableString(string value = null)
@@ -26,5 +23,7 @@ namespace Bale007.Bindables
                 }
             }
         }
+
+        public event Action<string> changed;
     }
 }
