@@ -7,24 +7,19 @@ namespace Bale007.Pooler
 {
     public class Pooler
     {
-        protected Stack<GameObject> freeInstances = new Stack<GameObject>();
-        protected GameObject original;
-        protected Transform parent;
+        private static GameObject root;
         
+        private readonly Stack<GameObject> freeInstances;
+        private readonly GameObject original;
+      
         public Pooler(GameObject original, int initialSize)
         {
             this.original = original;
             freeInstances = new Stack<GameObject>(initialSize);
-            parent = GameObject.FindGameObjectWithTag("ObjectPool")?.transform;
-
-            if (parent == null)
-            {
-                ClientUtil.Log("Object Pool Root Not Found","yellow");
-            }
 
             for (var i = 0; i < initialSize; ++i)
             {
-                var obj = Object.Instantiate(original, parent, true);
+                var obj = Object.Instantiate(original, Root, true);
                 obj.name = original.name;
                 obj.SetActive(false);
                 freeInstances.Push(obj);
@@ -55,9 +50,22 @@ namespace Bale007.Pooler
 
         public void Free(GameObject obj)
         {
-            obj.transform.SetParent(parent);
+            obj.transform.SetParent(Root);
             obj.SetActive(false);
             freeInstances.Push(obj);
+        }
+
+        public Transform Root
+        {
+            get
+            {
+                if (root == null)
+                {
+                    root = new GameObject("_POOL");
+                }
+
+                return root.transform;
+            }
         }
     }
 }
