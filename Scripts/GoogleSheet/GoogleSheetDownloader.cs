@@ -16,24 +16,30 @@ namespace Bale007.GoogleSheet
         private readonly string onlineCsvPath;
         private readonly string saveDataPath;
 
+        private List<CsvData> downloadList;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="onlineCsvPath">Publish google sheet as csv, then replace the sheet id part with {0}</param>
+        /// <param name="saveDataPath">For example, "Assets/Data/{0}.csv" </param>
         public GoogleSheetDownloader(string onlineCsvPath, string saveDataPath)
         {
             this.onlineCsvPath = onlineCsvPath;
             this.saveDataPath = saveDataPath;
+            this.downloadList = new List<CsvData>();
         }
 
         public IEnumerator PullData()
-        {
+        {            
 #if UNITY_EDITOR
-            if (PlayerPrefs.GetInt(Setting.DOWNLOAD_KEY) == 1)
+            if (PlayerPrefs.GetInt(Setting.DOWNLOAD_KEY) == 1 && downloadList.Count > 0)
             {
                 PlayerPrefs.SetInt(Setting.DOWNLOAD_KEY, 0);
                 var newAsset = false;
-                var downloadList = MakeDownloadList();
 
-                foreach (var data in MakeDownloadList())
+                foreach (var data in downloadList)
                 {
-                    Debug.Log("Downloading:" + data.tableName);
+                    Debug.Log("Pulling: " + data.tableName);
 
                     var assetPath = string.Format(saveDataPath, data.tableName);
                     var downloadPath = string.Format(onlineCsvPath, data.sheetId);
@@ -57,18 +63,15 @@ namespace Bale007.GoogleSheet
             yield return null;
         }
 
-        private List<CsvData> MakeDownloadList()
+        public void AddItem(string sheetId, string tableName)
         {
-            var downloadList = new List<CsvData>();
-
-            return downloadList;
+            downloadList.Add(new CsvData(sheetId, tableName));
         }
-
-        [Serializable]
+        
         private struct CsvData
         {
-            public string sheetId;
-            public string tableName;
+            public readonly string sheetId;
+            public readonly string tableName;
 
             public CsvData(string sheetId, string tableName)
             {

@@ -22,7 +22,17 @@ namespace Bale007.Util
         {
             if (Setting.SHOW_DEBUG_MSG) Debug.Log(aLog);
         }
+        
+        public static void LogFormat(string aLog, params object[] aParam)
+        {
+            if (Setting.SHOW_DEBUG_MSG) Debug.LogFormat(aLog, aParam);
+        }
 
+        public static void LogErrorFormat(string aLog, params object[] aParam)
+        {
+            if (Setting.SHOW_DEBUG_MSG) Debug.LogErrorFormat(aLog, aParam);
+        }
+        
         public static void LogError(string aLog)
         {
             if (Setting.SHOW_DEBUG_MSG) Debug.LogError(aLog);
