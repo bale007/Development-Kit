@@ -1,4 +1,7 @@
-﻿using UnityEditor;
+﻿using System.Collections;
+using Bale007.GoogleSheet;
+using Data;
+using UnityEditor;
 using UnityEngine;
 
 namespace Bale007.Editor
@@ -19,6 +22,12 @@ namespace Bale007.Editor
             PlayerPrefs.SetInt(Setting.DOWNLOAD_KEY, 0);
 
             Debug.Log("Pull Data [0]");
+        }
+        
+        [MenuItem("Google Sheet/Data/(Test) Download")]
+        public static void DownloadData()
+        {
+
         }
     }
 }
