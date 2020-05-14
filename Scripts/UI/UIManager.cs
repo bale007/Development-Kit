@@ -23,12 +23,12 @@ namespace Bale007.UI
     
         public void RegisterHud(UIHud hud)
         {
-            registeredHuds.Add(hud.GetType(), hud);
+            //registeredHuds.Add(hud.GetType(), hud);
         }
     
         public void DeRegisterHud(UIHud hud)
         {
-            registeredHuds.Remove(hud.GetType());
+            //registeredHuds.Remove(hud.GetType());
         }
     
         public void OpenPanel<T>(params object[] param) where T: UIPanel

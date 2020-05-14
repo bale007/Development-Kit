@@ -10,8 +10,8 @@ namespace Bale007
 #elif UNITY_ANDROID || UNITY_IOS
     public static string SAVE_PATH = Application.persistentDataPath;
 #endif
-        public static readonly bool SHOW_DEBUG_MSG = true;
-        public static readonly bool ENCRYPT_STRING = true;
+        public const bool SHOW_DEBUG_MSG = true;
+        public const bool ENCRYPT_STRING = false;
 
         public static readonly string DOWNLOAD_KEY = "PULL_DATA";
         public static readonly string STRING_KEY = ""; //your private key value here
