@@ -31,7 +31,7 @@ namespace Bale007.Util
         {
             string filePath;
 
-            filePath = Setting.SAVE_PATH;
+            filePath = Path.Combine(Setting.SAVE_PATH, Setting.SAVE_FOLDER_NAME);
 
             filePath = Path.Combine(filePath, filename);
 

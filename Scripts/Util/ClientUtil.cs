@@ -199,6 +199,15 @@ namespace Bale007.Util
 
             return result;
         }
+        
+        public static List<string> DictionaryToList(Dictionary<string, bool> dictionary, char separator = ':')
+        {
+            var result = new List<string>();
+
+            foreach (var pair in dictionary) result.Add(pair.Key + separator + pair.Value);
+
+            return result;
+        }
 
         public static List<string> DictionaryToList(Dictionary<int, int> dictionary, char separator = ':')
         {
@@ -371,6 +380,20 @@ namespace Bale007.Util
                 var values = content.Split(separator);
 
                 aDict.Add(values[0], int.Parse(values[1]));
+            }
+
+            return aDict;
+        }
+        
+        public static Dictionary<string, bool> ListToStringBoolDictionary(List<string> list, char separator = ':')
+        {
+            var aDict = new Dictionary<string, bool>();
+
+            foreach (var content in list)
+            {
+                var values = content.Split(separator);
+
+                aDict.Add(values[0], bool.Parse(values[1]));
             }
 
             return aDict;
