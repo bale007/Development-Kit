@@ -6,5 +6,3 @@ Build/*
 *.csproj
 *.sln
 .vs/*
-Logs/Packages-Update.log
-Packages/manifest.json
