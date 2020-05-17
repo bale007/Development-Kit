@@ -10,10 +10,11 @@ namespace Bale007
 #elif UNITY_ANDROID || UNITY_IOS
     public static string SAVE_PATH = Application.persistentDataPath;
 #endif
+        
         public const bool SHOW_DEBUG_MSG = true;
         public const bool ENCRYPT_STRING = false;
 
-        public static readonly string DOWNLOAD_KEY = "PULL_DATA";
+        public static readonly string SAVE_FOLDER_NAME = "ProjectSilentData";
         public static readonly string STRING_KEY = ""; //your private key value here
         public static readonly string STRING_IV = ""; //your private iv value here
     }

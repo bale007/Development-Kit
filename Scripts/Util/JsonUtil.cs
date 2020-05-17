@@ -10,14 +10,11 @@ namespace Bale007.Util
         {
             var dataJson = JsonConvert.SerializeObject(content, Formatting.Indented);
 
-            //TODO Encryption
             var dataEncrypted = ClientUtil.EncryptString(dataJson);
 
-            //string filePath = Path.Combine(Constant.SAVE_PATH, Constant.SAVE_FOLDER_NAME);
-            var filePath = Setting.SAVE_PATH;
+            var filePath = Path.Combine(Setting.SAVE_PATH, Setting.SAVE_FOLDER_NAME);
 
-            Debug.Log("root path:" + filePath);
-            //createIfNotExist(filePath);
+            CreateIfNotExist(filePath);
 
             filePath = Path.Combine(filePath, filename);
 
@@ -35,8 +32,6 @@ namespace Bale007.Util
             string filePath;
 
             filePath = Setting.SAVE_PATH;
-
-            //createIfNotExist(filePath);
 
             filePath = Path.Combine(filePath, filename);
 
@@ -83,6 +78,14 @@ namespace Bale007.Util
             }
         }
 
+        private static void CreateIfNotExist(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }    
+        }
+        
         private static float SizeOfString(string content)
         {
             return content.Length * sizeof(char) / 1024f;

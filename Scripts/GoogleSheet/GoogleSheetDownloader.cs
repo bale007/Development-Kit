@@ -32,7 +32,7 @@ namespace Bale007.GoogleSheet
         public IEnumerator PullData()
         {            
 #if UNITY_EDITOR
-            if (PlayerPrefs.GetInt(Setting.DOWNLOAD_KEY) == 1 && downloadList.Count > 0)
+            /*if (PlayerPrefs.GetInt(Setting.DOWNLOAD_KEY) == 1 && downloadList.Count > 0)
             {
                 PlayerPrefs.SetInt(Setting.DOWNLOAD_KEY, 0);
                 var newAsset = false;
@@ -58,7 +58,7 @@ namespace Bale007.GoogleSheet
                 AssetDatabase.Refresh();
 
                 if (newAsset) EditorApplication.isPlaying = false;
-            }
+            }*/
 #endif
             yield return null;
         }
