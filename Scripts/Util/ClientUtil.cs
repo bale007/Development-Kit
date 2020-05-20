@@ -59,6 +59,11 @@ namespace Bale007.Util
             }
         }
 
+        public static bool ParseBool(string aText)
+        {
+            return bool.Parse(aText);
+        }
+        
         public static int ParseInt(string aText)
         {
             return int.Parse(aText, NumberFormatInfo.InvariantInfo);
