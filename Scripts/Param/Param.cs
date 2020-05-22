@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Bale007.Util;
 using UnityEngine;
 
@@ -67,6 +68,16 @@ namespace Bale007.Param
             if (paramData.TryGetValue(paramKey, out var vo))
             {
                 return ClientUtil.ParseBool(vo);
+            }
+            
+            return defaultValue;
+        }
+        
+        public T GetEnum<T>(string paramKey, T defaultValue) where T: Enum
+        {
+            if (paramData.TryGetValue(paramKey, out var vo))
+            {
+                return ClientUtil.ParseEnum<T>(vo);
             }
             
             return defaultValue;
