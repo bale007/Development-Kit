@@ -39,5 +39,10 @@ namespace Enumerable
 
             return def;
         }
+
+        public Dictionary<string, T> RawData
+        {
+            get { return data; }
+        }
     }
 }

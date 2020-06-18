@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Bale007.EventBus;
+using Bale007.Singleton;
 using UnityEngine;
 
 namespace Bale007.UI
 {
-    public class UIManager : SingletonBase<UIManager>
+    public class UIManager : MonoSingleton<UIManager>
     {      
         private Dictionary<Type, UIPanel> registeredPanels = new Dictionary<Type, UIPanel>();
         private Dictionary<Type, UIHud> registeredHuds = new Dictionary<Type, UIHud>(); 
@@ -40,6 +42,8 @@ namespace Bale007.UI
                     openedPanels.Add(windowFound);
     
                     windowFound.OpenPanel(param);
+
+                    HandleOpenPanelChanged();
     
                     return;
                 }
@@ -57,6 +61,8 @@ namespace Bale007.UI
                     openedPanels.Remove(panel);
     
                     panel.ClosePanel();
+                    
+                    HandleOpenPanelChanged();
                     
                     return;
                 }
@@ -104,6 +110,18 @@ namespace Bale007.UI
         public bool HasActivePanel
         {
             get { return openedPanels.Count > 0; }
+        }
+
+        private void HandleOpenPanelChanged()
+        {
+            if (HasActivePanel)
+            {
+                EventBus.EventBus.Publish(EventBusEventType.UINotification_HideHud);
+            }
+            else
+            {
+                EventBus.EventBus.Publish(EventBusEventType.UINotification_ShowHud);
+            }
         }
     }
 }

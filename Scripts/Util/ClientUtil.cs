@@ -469,7 +469,7 @@ namespace Bale007.Util
 
         #endregion display
 
-        #region format
+        #region Format
 
         public static string CombinePath(string path, string filename)
         {
@@ -493,6 +493,11 @@ namespace Bale007.Util
 
         #region Math
 
+        public static bool IsFloatZero(float value)
+        {
+            return Math.Abs(value) < float.Epsilon;
+        }
+        
         public static float ClampFloat(float num, float min, float max)
         {
             num = Mathf.Min(max, num);

@@ -5,20 +5,20 @@ namespace Bale007.UI
     public abstract class UIPanel : MonoBehaviour
     {
         protected GameObject container;
-
-        private void Awake()
+        
+        protected virtual void Awake()
         {        
             container = transform.Find("Container").gameObject;
 
             PanelAwake();
         }
     
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             UIManager.Instance.RegisterPanel(this);
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             if (UIManager.Instance != null)
             {

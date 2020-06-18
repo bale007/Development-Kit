@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [CustomEditor(typeof(GuidComponent))]
-public class GuidComponentDrawer : Editor
+public class GuidComponentDrawer : UnityEditor.Editor
 {
     private GuidComponent guidComp;
 

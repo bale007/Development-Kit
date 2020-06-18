@@ -5,12 +5,12 @@ namespace Bale007.UI
 {
     public abstract class UIHud : MonoBehaviour
     {
-        private void Awake()
+        protected virtual void Awake()
         {
-            HudAwake();
+
         }
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             EventBus.EventBus.Subscribe(EventBusEventType.UINotification_ShowHud, Show);
             EventBus.EventBus.Subscribe(EventBusEventType.UINotification_HideHud, Hide);
@@ -18,17 +18,12 @@ namespace Bale007.UI
             UIManager.Instance.RegisterHud(this);
         }
 
-        private void OnDisable()
+        protected virtual  void OnDisable()
         {
             EventBus.EventBus.UnSubscribe(EventBusEventType.UINotification_ShowHud, Show);
             EventBus.EventBus.UnSubscribe(EventBusEventType.UINotification_HideHud, Hide);
             
-            UIManager.Instance.DeRegisterHud(this);
-        }
-
-        protected virtual void HudAwake()
-        {
-
+            UIManager.Instance?.DeRegisterHud(this);
         }
 
         public virtual void Refresh(params object[] param)

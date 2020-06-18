@@ -67,13 +67,13 @@ namespace Bale007.Util
         ///     It is meant for serial single-pass looping over the element collection. Calls to functions
         ///     like ToList() will defeat the purpose of this function.
         /// </summary>
-        public static IEnumerable<XElement> StreamElement(string xmlString, string elementName)
+        /*public static IEnumerable<XElement> StreamElement(string xmlString, string elementName)
         {
             using (var reader = XmlReader.Create(new StringReader(xmlString)))
             {
                 while (reader.Name == elementName || reader.ReadToFollowing(elementName))
                     yield return (XElement) XNode.ReadFrom(reader);
             }
-        }
+        }*/
     }
 }
