@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Bale007.Util
 {
-    public static class JsonUtil
+    public static class SaveUtil
     {
         public static void Save<T>(T content, string filename) where T : class
         {

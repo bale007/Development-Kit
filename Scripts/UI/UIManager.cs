@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Bale007.UI
 {
-    public class UIManager : MonoSingleton<UIManager>
+    public class UIManager : SingletonBase<UIManager>
     {      
         private Dictionary<Type, UIPanel> registeredPanels = new Dictionary<Type, UIPanel>();
         private Dictionary<Type, UIHud> registeredHuds = new Dictionary<Type, UIHud>(); 
@@ -25,12 +25,12 @@ namespace Bale007.UI
     
         public void RegisterHud(UIHud hud)
         {
-            //registeredHuds.Add(hud.GetType(), hud);
+            registeredHuds.Add(hud.GetType(), hud);
         }
     
         public void DeRegisterHud(UIHud hud)
         {
-            //registeredHuds.Remove(hud.GetType());
+            registeredHuds.Remove(hud.GetType());
         }
     
         public void OpenPanel<T>(params object[] param) where T: UIPanel
@@ -83,11 +83,11 @@ namespace Bale007.UI
             Debug.LogError("Refresh HUD Failed:" + typeof(T));
         }
         
-        public void ShowHud<T>() where T: UIHud
+        public void ShowHud<T>(params object[] param) where T: UIHud
         {
             if (registeredHuds.TryGetValue(typeof(T), out var hudFound))
             {
-                hudFound.Show();
+                hudFound.Show(param);
     
                 return;
             }

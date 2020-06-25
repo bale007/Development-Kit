@@ -74,9 +74,9 @@ namespace Bale007.Util
             return float.Parse(aText, NumberFormatInfo.InvariantInfo);
         }
 
-        public static Vector2 ParseVector2(string aText)
+        public static Vector2 ParseVector2(string aText, char aSeparator = ',')
         {
-            var textSplit = aText.Split(',');
+            var textSplit = aText.Split(aSeparator);
             return new Vector2(ParseFloat(textSplit[0]), ParseFloat(textSplit[1]));
         }
 
