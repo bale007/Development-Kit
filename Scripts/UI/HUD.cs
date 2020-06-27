@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Bale007.UI
 {
-    public abstract class UIHud : MonoBehaviour
+    public abstract class HUD : MonoBehaviour
     {
         protected virtual void Awake()
         {

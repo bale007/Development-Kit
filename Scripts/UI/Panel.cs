@@ -2,7 +2,7 @@
 
 namespace Bale007.UI
 {
-    public abstract class UIPanel : MonoBehaviour
+    public abstract class Panel : MonoBehaviour
     {
         protected GameObject container;
         

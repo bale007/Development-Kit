@@ -9,31 +9,31 @@ namespace Bale007.UI
 {
     public class UIManager : SingletonBase<UIManager>
     {      
-        private Dictionary<Type, UIPanel> registeredPanels = new Dictionary<Type, UIPanel>();
-        private Dictionary<Type, UIHud> registeredHuds = new Dictionary<Type, UIHud>(); 
-        private List<UIPanel> openedPanels = new List<UIPanel>();
+        private readonly Dictionary<Type, Panel> registeredPanels = new Dictionary<Type, Panel>();
+        private readonly Dictionary<Type, HUD> registeredHUDs = new Dictionary<Type, HUD>(); 
+        private List<Panel> openedPanels = new List<Panel>();
     
-        public void RegisterPanel(UIPanel panel)
+        public void RegisterPanel(Panel panel)
         {
             registeredPanels.Add(panel.GetType(), panel);
         }
     
-        public void DeRegisterPanel(UIPanel panel)
+        public void DeRegisterPanel(Panel panel)
         {
             registeredPanels.Remove(panel.GetType());
         }
     
-        public void RegisterHud(UIHud hud)
+        public void RegisterHud(HUD hud)
         {
-            registeredHuds.Add(hud.GetType(), hud);
+            registeredHUDs.Add(hud.GetType(), hud);
         }
     
-        public void DeRegisterHud(UIHud hud)
+        public void DeRegisterHud(HUD hud)
         {
-            registeredHuds.Remove(hud.GetType());
+            registeredHUDs.Remove(hud.GetType());
         }
     
-        public void OpenPanel<T>(params object[] param) where T: UIPanel
+        public void OpenPanel<T>(params object[] param) where T: Panel
         {
             if(registeredPanels.TryGetValue(typeof(T), out var windowFound))
             {
@@ -52,9 +52,9 @@ namespace Bale007.UI
             Debug.LogError("Opened Panel Failed:" + typeof(T));
         }
     
-        public void ClosePanel<T>() where T : UIPanel
+        public void ClosePanel<T>() where T : Panel
         {
-            foreach(UIPanel panel in openedPanels)
+            foreach(Panel panel in openedPanels)
             {
                 if(panel.GetType() == typeof(T))
                 {
@@ -71,9 +71,9 @@ namespace Bale007.UI
             Debug.LogError("Close Panel Failed:" + typeof(T));
         }
     
-        public void RefreshHud<T>(params object[] param) where T: UIHud
+        public void RefreshHud<T>(params object[] param) where T: HUD
         {
-            if (registeredHuds.TryGetValue(typeof(T), out var hudFound))
+            if (registeredHUDs.TryGetValue(typeof(T), out var hudFound))
             {
                 hudFound.Refresh(param);
     
@@ -83,9 +83,9 @@ namespace Bale007.UI
             Debug.LogError("Refresh HUD Failed:" + typeof(T));
         }
         
-        public void ShowHud<T>(params object[] param) where T: UIHud
+        public void ShowHud<T>(params object[] param) where T: HUD
         {
-            if (registeredHuds.TryGetValue(typeof(T), out var hudFound))
+            if (registeredHUDs.TryGetValue(typeof(T), out var hudFound))
             {
                 hudFound.Show(param);
     
@@ -95,9 +95,9 @@ namespace Bale007.UI
             Debug.LogError("Show HUD Failed:" + typeof(T));
         }
         
-        public void HideHud<T>() where T: UIHud
+        public void HideHud<T>() where T: HUD
         {    
-            if (registeredHuds.TryGetValue(typeof(T), out var hudFound))
+            if (registeredHUDs.TryGetValue(typeof(T), out var hudFound))
             {
                 hudFound.Hide();
     
